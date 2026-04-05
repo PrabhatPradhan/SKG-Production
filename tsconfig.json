@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-  ],
+, "app/Components/ModelCard/ModelCard.jsx"  ],
   "exclude": ["node_modules"]
 }
