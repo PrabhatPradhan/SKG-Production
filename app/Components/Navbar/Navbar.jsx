@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import "./Navbar.css"
+import Image from "next/image";
 const navLinks = [
   { label: "Home", href: "/" },
   {
@@ -76,8 +77,8 @@ export default function Navbar() {
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 64 }}>
 
             {/* ── LOGO ── */}
-            <Link href="/" style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none" }}>
-              <div className="logo-emblem">
+            <Link href="/" style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none",   }}>
+              {/* <div className="logo-emblem">
                 <span>SKG</span>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
@@ -94,7 +95,14 @@ export default function Navbar() {
                 }}>
                   Production
                 </div>
-              </div>
+              </div> */}
+               <Image
+                  src="/black-logo.png"
+                  alt="Logo"
+                  width={120}
+                  height={40}
+                  priority
+                />
             </Link>
 
             {/* ── DESKTOP LINKS ── */}

@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import "./hero.css"
 import ShootCards from "../ShootCards/ShootCards";
+import OurModels from "../OurModels/OurModels";
 const stats = [
   { num: "850+", label: "Projects Done" },
   { num: "12",   label: "Years Experience" },
@@ -32,7 +33,7 @@ export default function HomeContent() {
   return (
     <>
       
-      <div className="page-wrapper" ref={heroRef}>
+      <div className="page-wrapper"  suppressHydrationWarning ref={heroRef}>
 
         {/* ══════════════════════════════
             HERO
@@ -67,19 +68,7 @@ export default function HomeContent() {
           </div>
         </section>
 
-        {/* ══════════════════════════════
-            STATS
-        ══════════════════════════════ */}
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 2rem" }}>
-          <div className="stats-grid">
-            {stats.map((s, i) => (
-              <div className="stat-item" key={i}>
-                <div className="stat-num">{s.num}</div>
-                <div className="stat-label">{s.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
+       
 
         {/* ══════════════════════════════
             GALLERY
@@ -111,8 +100,9 @@ export default function HomeContent() {
           </div>
         </section> */}
        <ShootCards/>
+       <OurModels/>
 
-
+       
         {/* ══════════════════════════════
             SERVICES
         ══════════════════════════════ */}
@@ -145,6 +135,20 @@ export default function HomeContent() {
             ))}
           </div>
         </section>
+
+{/* ══════════════════════════════
+            STATS
+        ══════════════════════════════ */}
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 2rem", marginBottom:"1rem", }}>
+          <div className="stats-grid">
+            {stats.map((s, i) => (
+              <div className="stat-item" key={i}>
+                <div className="stat-num">{s.num}</div>
+                <div className="stat-label">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
 
         {/* ══════════════════════════════
             TESTIMONIAL

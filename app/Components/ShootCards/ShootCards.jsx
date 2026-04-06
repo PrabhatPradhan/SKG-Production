@@ -89,7 +89,7 @@ export default function ShootCards() {
           </div>
         ))}
       </div>
-\
+ 
       <style>{`
         .skg-shoot-section {
           padding: 80px 24px;

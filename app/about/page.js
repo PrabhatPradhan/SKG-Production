@@ -1,35 +1,36 @@
-// app/about/page.jsx  (ya pages/about.jsx)
+
 "use client";
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { Fragment } from "react";
 
 const timelineData = [
-  { year: "2012", side: "left",  event: "Studio Founded",           desc: "Opened our first portrait studio in Lajpat Nagar, Delhi with just one camera and an unwavering vision." },
+  { year: "2012", side: "left", event: "Studio Founded", desc: "Opened our first portrait studio in Lajpat Nagar, Delhi with just one camera and an unwavering vision." },
   { year: "2015", side: "right", event: "Wedding Division Launched", desc: "Expanded into destination wedding photography, shooting over 60 weddings in the first year alone." },
-  { year: "2017", side: "left",  event: "First National Award",      desc: "Received the India Photography Excellence Award for Best Portrait Series at the Delhi Photo Festival." },
+  { year: "2017", side: "left", event: "First National Award", desc: "Received the India Photography Excellence Award for Best Portrait Series at the Delhi Photo Festival." },
   { year: "2019", side: "right", event: "Fashion & Commercial Wing", desc: "Launched high-fashion and commercial photography, collaborating with leading Indian fashion brands and magazines." },
-  { year: "2021", side: "left",  event: "New Studio, South Delhi",   desc: "Moved into our purpose-built 4,000 sq ft studio with multiple shooting sets, a post-processing suite, and model management." },
-  { year: "2024", side: "right", event: "850+ Projects & Counting",  desc: "Crossed 850 completed projects with clients from across India, the UAE, UK and beyond. 40+ industry awards on the wall." },
+  { year: "2021", side: "left", event: "New Studio, South Delhi", desc: "Moved into our purpose-built 4,000 sq ft studio with multiple shooting sets, a post-processing suite, and model management." },
+  { year: "2024", side: "right", event: "850+ Projects & Counting", desc: "Crossed 850 completed projects with clients from across India, the UAE, UK and beyond. 40+ industry awards on the wall." },
 ];
 
 const awardsData = [
-  { year: "2024", icon: "🏆", name: "Best Wedding Photography Studio",      org: "Wedding Sutra Awards, Mumbai",       badge: "Gold" },
-  { year: "2023", icon: "🥇", name: "Portrait Photographer of the Year",    org: "India Photo Festival, Delhi",        badge: "National" },
-  { year: "2023", icon: "✦",  name: "Excellence in Commercial Photography", org: "Advertising Club of India",          badge: "Silver" },
-  { year: "2022", icon: "🎖", name: "Best Fashion Editorial",               org: "Vogue India Creative Awards",        badge: "Featured" },
-  { year: "2020", icon: "🏅", name: "Top 10 Studios — North India",         org: "Photography Business Review",        badge: "Ranked #3" },
-  { year: "2017", icon: "⭐", name: "Best Portrait Series",                 org: "Delhi Photo Festival",               badge: "Debut Award" },
+  { year: "2024", icon: "🏆", name: "Best Wedding Photography Studio", org: "Wedding Sutra Awards, Mumbai", badge: "Gold" },
+  { year: "2023", icon: "🥇", name: "Portrait Photographer of the Year", org: "India Photo Festival, Delhi", badge: "National" },
+  { year: "2023", icon: "✦", name: "Excellence in Commercial Photography", org: "Advertising Club of India", badge: "Silver" },
+  { year: "2022", icon: "🎖", name: "Best Fashion Editorial", org: "Vogue India Creative Awards", badge: "Featured" },
+  { year: "2020", icon: "🏅", name: "Top 10 Studios — North India", org: "Photography Business Review", badge: "Ranked #3" },
+  { year: "2017", icon: "⭐", name: "Best Portrait Series", org: "Delhi Photo Festival", badge: "Debut Award" },
 ];
 
 const valuesData = [
   { num: "01", name: "Authenticity", desc: "We capture real moments, real emotion. No manufactured poses — only genuine stories told through light and shadow." },
-  { num: "02", name: "Precision",    desc: "Every frame is considered. From composition to post-processing, we obsess over detail so you never have to." },
-  { num: "03", name: "Legacy",       desc: "We create work meant to endure for generations — images that your grandchildren will look at with wonder." },
-  { num: "04", name: "Trust",        desc: "Our clients invite us into their most intimate moments. We honour that trust with discretion, respect and care." },
+  { num: "02", name: "Precision", desc: "Every frame is considered. From composition to post-processing, we obsess over detail so you never have to." },
+  { num: "03", name: "Legacy", desc: "We create work meant to endure for generations — images that your grandchildren will look at with wonder." },
+  { num: "04", name: "Trust", desc: "Our clients invite us into their most intimate moments. We honour that trust with discretion, respect and care." },
 ];
 
-export default function AboutPage() {
+export default function about() {
   const [visible, setVisible] = useState(false);
   useEffect(() => { const t = setTimeout(() => setVisible(true), 80); return () => clearTimeout(t); }, []);
 
@@ -275,7 +276,7 @@ export default function AboutPage() {
         }
       `}</style>
 
-      <div className="about-page">
+      <div  className="about-page">
 
         {/* ── HERO ── */}
         <div className="about-hero">
@@ -291,14 +292,14 @@ export default function AboutPage() {
 
         {/* ── FOUNDED STRIP ── */}
         <div className="founded-strip">
-          {[["2012","Founded"],["850+","Projects"],["40+","Awards"],["Delhi","Based"],["12","Years"]].map(([n,l],i) => (
-            <>
-              {i > 0 && <div key={`d${i}`} className="f-divider" />}
-              <div key={n} className="f-item">
+          {[["2012", "Founded"], ["850+", "Projects"], ["40+", "Awards"], ["Delhi", "Based"], ["12", "Years"]].map(([n, l], i) => (
+            <Fragment key={n}> {/* ✅ KEY YAHAN */}
+              {i > 0 && <div className="f-divider" />}
+              <div className="f-item">
                 <div className="f-num">{n}</div>
                 <div className="f-label">{l}</div>
               </div>
-            </>
+            </Fragment>
           ))}
         </div>
 
@@ -331,53 +332,9 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* ── TIMELINE ── */}
-        <section className="timeline-section">
-          <div className="wrap">
-            <div className="section-tag">Our Journey</div>
-            <h2 className="section-h">A Decade of <em>Milestones</em></h2>
-            <div className="timeline">
-              {timelineData.map((item, i) => (
-                <div className="tl-item" key={i}>
-                  <div className="tl-left">
-                    {item.side === "left" && <>
-                      <div className="tl-year">{item.year}</div>
-                      <div className="tl-event">{item.event}</div>
-                      <div className="tl-desc">{item.desc}</div>
-                    </>}
-                  </div>
-                  <div className="tl-dot" />
-                  <div className="tl-right">
-                    {item.side === "right" && <>
-                      <div className="tl-year">{item.year}</div>
-                      <div className="tl-event">{item.event}</div>
-                      <div className="tl-desc">{item.desc}</div>
-                    </>}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        
 
-        {/* ── AWARDS ── */}
-        <section className="awards-section">
-          <div className="wrap">
-            <div className="section-tag">Recognition</div>
-            <h2 className="section-h">Awards & <em>Honours</em></h2>
-            <div className="awards-grid">
-              {awardsData.map((a, i) => (
-                <div className="award-card" key={i}>
-                  <div className="award-year">{a.year}</div>
-                  <div className="award-icon">{a.icon}</div>
-                  <div className="award-name">{a.name}</div>
-                  <div className="award-org">{a.org}</div>
-                  <div className="award-badge">{a.badge}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        
 
         {/* ── VALUES ── */}
         <section className="values-section">
@@ -399,7 +356,7 @@ export default function AboutPage() {
         </section>
 
         {/* ── CTA ── */}
-        <div className="about-cta">
+        {/* <div className="about-cta">
           <div className="page-eyebrow" style={{ marginBottom: 12 }}>Ready to Work Together?</div>
           <h2 className="cta-h">Let's Create Your <em>Story</em></h2>
           <p className="cta-sub">Book a consultation and see how SKG Production can bring your vision to life.</p>
@@ -412,7 +369,7 @@ export default function AboutPage() {
             </Link>
             <Link href="/portfolio" className="btn-ghost">View Portfolio →</Link>
           </div>
-        </div>
+        </div> */}
 
       </div>
     </>

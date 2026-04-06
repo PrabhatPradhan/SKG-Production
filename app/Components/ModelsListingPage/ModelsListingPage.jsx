@@ -32,8 +32,8 @@ export default function ModelsListingPage({ models, title, subtitle, filters, ba
       `}</style>
 
       <main
-        className="min-h-screen pt-20"
-        style={{ background: "linear-gradient(160deg,#080808 0%,#100e06 50%,#080808 100%)" }}
+        className="min-h-screen "
+         
       >
         {/* Hero Header */}
         <section className="text-center px-4 pt-10 pb-8">
@@ -55,7 +55,7 @@ export default function ModelsListingPage({ models, title, subtitle, filters, ba
             <button
               key={f}
               onClick={() => setActiveFilter(f)}
-              className={`font-josefin text-[9px] tracking-[3px] uppercase px-5 py-2 border transition-all duration-250 ${
+              className={`font-josefin text-[12px] tracking-[3px] uppercase px-5 py-2 border transition-all duration-250 ${
                 activeFilter === f
                   ? "border-yellow-500 text-yellow-400"
                   : "border-yellow-500/15 text-gray-600 hover:border-yellow-500/40 hover:text-yellow-500/70"

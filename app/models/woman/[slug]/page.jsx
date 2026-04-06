@@ -1,12 +1,14 @@
 "use client";
 
+import { use } from "react"; // ✅ ADD THIS
 import { notFound } from "next/navigation";
 import ModelDetailView from "../../../Components/ModelDetailView/ModelDetailView";
 import { womanModels } from "../../../../data/womanModels";
- 
 
 export default function WomanModelDetailPage({ params }) {
-  const model = womanModels.find((m) => m.slug === params.slug);
+  const { slug } = use(params); // ✅ FIX
+
+  const model = womanModels.find((m) => m.slug === slug);
   if (!model) notFound();
 
   return (
@@ -26,6 +28,7 @@ export default function WomanModelDetailPage({ params }) {
         @keyframes statIn { from{opacity:0;transform:translateX(-10px)} to{opacity:1;transform:translateX(0)} }
         .book-btn-glow:hover { box-shadow:0 0 25px rgba(201,168,76,.35); }
       `}</style>
+
       <ModelDetailView
         model={model}
         backPath="/models/woman"

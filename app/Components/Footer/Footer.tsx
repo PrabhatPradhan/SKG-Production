@@ -1,9 +1,10 @@
  
 import "../Hero/hero.css"
+import { FaInstagram, FaFacebookF, FaTwitter, FaYoutube } from "react-icons/fa";
 export default function Footer() {
   return (
     <>
-     <footer className="footer">
+     <footer suppressHydrationWarning   className="footer">
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
             <div className="footer-grid">
               <div>
@@ -11,11 +12,13 @@ export default function Footer() {
                 <div className="footer-tagline">
                   A premier photography studio based in Delhi, crafting timeless visuals for portraits, weddings, fashion and commercial projects.
                 </div>
-                <div className="footer-socials" style={{ marginTop: 24 }}>
-                  {["📸","📘","🐦","▶"].map((s,i) => (
-                    <a key={i} href="#" className="footer-social">{s}</a>
-                  ))}
-                </div>
+               <div className="footer-socials" style={{ marginTop: 24 }}>
+  {[FaInstagram, FaFacebookF, FaTwitter, FaYoutube].map((Icon, i) => (
+    <a key={i} href="#" className="footer-social">
+      <Icon />
+    </a>
+  ))}
+</div>
               </div>
               <div>
                 <div className="footer-col-title">Services</div>

@@ -32,7 +32,7 @@ export default function ModelDetailView({ model, backPath, backLabel, accentColo
   return (
     <main
       className="min-h-screen pt-20 page-enter"
-      style={{ background: "linear-gradient(160deg,#080808 0%,#0f0e06 60%,#080808 100%)" }}
+      
     >
       {/* Breadcrumb */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-6 pb-2">

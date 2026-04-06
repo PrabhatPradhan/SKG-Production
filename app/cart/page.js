@@ -48,7 +48,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 mt-6">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Header */}
         <div className="flex items-center justify-between mb-10">
@@ -151,11 +151,11 @@ export default function CartPage() {
               </Link>
 
               {/* Trust Badges */}
-              <div className="mt-6 pt-6 border-t border-gray-100 space-y-2">
+              {/* <div className="mt-6 pt-6 border-t border-gray-100 space-y-2">
                 {["🔒 Secure Payment", "✓ Free Cancellation 48hrs", "📞 Dedicated Support"].map((badge) => (
                   <div key={badge} className="text-xs text-gray-400 flex items-center gap-2">{badge}</div>
                 ))}
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
