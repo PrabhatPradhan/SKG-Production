@@ -97,7 +97,7 @@ export default function Navbar() {
                 </div>
               </div> */}
                <Image
-                  src="/black-logo.png"
+                  src="/Black-logo.png"
                   alt="Logo"
                   width={120}
                   height={40}
