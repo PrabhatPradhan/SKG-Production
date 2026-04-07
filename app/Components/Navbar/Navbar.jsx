@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import "./Navbar.css"
 import Image from "next/image";
+import { useCart } from "../../../lib/CartContext"; // ✅ apna sahi path check karna
+ 
 const navLinks = [
   { label: "Home", href: "/" },
   {
@@ -27,16 +29,20 @@ const navLinks = [
       { label: "Child", href: "/models/child", icon: "👧" },
     ],
   },
-  { label: "Cart", href: "/cart" },
+  { label: "Cart", href: "/cart", cartBadge: true }, // ✅ cartBadge flag added
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
 
 export default function Navbar() {
+  const { availablePhotos } = useCart();
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [scrolled, setScrolled] = useState(false);
   const ref = useRef(null);
+
+  const { cartItems } = useCart(); // ✅ cart items lo
+  const cartCount = cartItems.length; // ✅ count
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -55,7 +61,6 @@ export default function Navbar() {
 
   return (
     <>
-     
       <nav
         ref={ref}
         style={{
@@ -77,32 +82,14 @@ export default function Navbar() {
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 64 }}>
 
             {/* ── LOGO ── */}
-            <Link href="/" style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none",   }}>
-              {/* <div className="logo-emblem">
-                <span>SKG</span>
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                <div style={{
-                  fontFamily: "'Cormorant Garamond', serif",
-                  fontSize: 20, fontWeight: 700, letterSpacing: 3,
-                  color: "var(--text)", lineHeight: 1,
-                }}>
-                  SKG
-                </div>
-                <div style={{
-                  fontSize: 9, letterSpacing: 4, textTransform: "uppercase",
-                  color: "var(--gold2)", fontWeight: 400,
-                }}>
-                  Production
-                </div>
-              </div> */}
-               <Image
-                  src="/Black-logo.png"
-                  alt="Logo"
-                  width={120}
-                  height={40}
-                  priority
-                />
+            <Link href="/" style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none" }}>
+              <Image
+                src="/black-logo.png"
+                alt="Logo"
+                width={120}
+                height={40}
+                priority
+              />
             </Link>
 
             {/* ── DESKTOP LINKS ── */}
@@ -184,6 +171,7 @@ export default function Navbar() {
                       )}
                     </>
                   ) : (
+                    // ✅ NON-DROPDOWN LINK WITH CART BADGE
                     <Link
                       href={link.href}
                       className="nav-underline"
@@ -193,11 +181,35 @@ export default function Navbar() {
                         color: "var(--text2)", textDecoration: "none",
                         padding: "8px 14px", display: "block",
                         transition: "color 0.2s",
+                        position: "relative", // ✅ badge ke liye zaroori
                       }}
                       onMouseEnter={(e) => (e.currentTarget.style.color = "var(--gold)")}
                       onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text2)")}
                     >
                       {link.label}
+
+                      {/* ✅ CART BADGE - sirf Cart link pe aur count > 0 ho tab */}
+                      {link.cartBadge && cartCount > 0 && (
+                        <span style={{
+                          position: "absolute",
+                          top: 2,
+                          right: 4,
+                          background: "#f43f5e",
+                          color: "#fff",
+                          fontSize: 9,
+                          fontWeight: 700,
+                          borderRadius: "50%",
+                          width: 16,
+                          height: 16,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          lineHeight: 1,
+                          pointerEvents: "none",
+                        }}>
+                          {cartCount}
+                        </span>
+                      )}
                     </Link>
                   )}
                 </div>
@@ -212,18 +224,15 @@ export default function Navbar() {
                 className="cta-btn"
                 style={{
                   fontFamily: "'DM Sans', sans-serif",
-                  fontSize: 10, letterSpacing: 2.5, textTransform: "uppercase",
+                  fontSize: 12, letterSpacing: 2.5, textTransform: "uppercase",
                   padding: "9px 22px",
                   background: "var(--text)", color: "var(--cream)",
                   textDecoration: "none",
                   display: "inline-flex", alignItems: "center", gap: 8,
                 }}
               >
-                <span>Book Now</span>
-                <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                  <line x1="5" y1="12" x2="19" y2="12" />
-                  <polyline points="12 5 19 12 12 19" />
-                </svg>
+               <span>{availablePhotos.toLocaleString()}</span>
+                 
               </Link>
             </div>
 
@@ -306,12 +315,13 @@ export default function Navbar() {
                       ))}
                     </>
                   ) : (
+                    // ✅ MOBILE CART BADGE
                     <Link
                       href={link.href}
                       onClick={() => setMenuOpen(false)}
                       className="mobile-link-item"
                       style={{
-                        display: "block",
+                        display: "flex", alignItems: "center", justifyContent: "space-between",
                         padding: "12px 0",
                         fontSize: 11, letterSpacing: 2, textTransform: "uppercase",
                         color: "var(--text2)", textDecoration: "none",
@@ -320,6 +330,24 @@ export default function Navbar() {
                       }}
                     >
                       {link.label}
+
+                      {/* ✅ MOBILE BADGE */}
+                      {link.cartBadge && cartCount > 0 && (
+                        <span style={{
+                          background: "#f43f5e",
+                          color: "#fff",
+                          fontSize: 9,
+                          fontWeight: 700,
+                          borderRadius: "50%",
+                          width: 18,
+                          height: 18,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}>
+                          {cartCount}
+                        </span>
+                      )}
                     </Link>
                   )}
                 </div>
@@ -339,13 +367,11 @@ export default function Navbar() {
               >
                 Book a Session
               </Link>
+
             </div>
           </div>
         )}
       </nav>
-
-      {/* Responsive CSS */}
-       
     </>
   );
 }
