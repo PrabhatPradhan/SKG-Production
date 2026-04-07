@@ -94,7 +94,7 @@ export default function PackageCard({ pkg, category }) {
         </div>
 
         {/* Includes */}
-        <div className="mb-5 space-y-1">
+        {/* <div className="mb-5 space-y-1">
           {pkg.includes.slice(0, 3).map((item, i) => (
             <div key={i} className="flex items-center gap-2 text-sm text-gray-600">
               <span className="text-emerald-500 font-bold">✓</span>
@@ -106,7 +106,7 @@ export default function PackageCard({ pkg, category }) {
               +{pkg.includes.length - 3} more inclusions
             </div>
           )}
-        </div>
+        </div> */}
 
         {/* Price & Buttons */}
         <div className="flex items-center justify-between pt-4 border-t border-gray-100">
@@ -120,12 +120,12 @@ export default function PackageCard({ pkg, category }) {
           </div>
 
           <div className="flex flex-col gap-2">
-            <Link
+            {/* <Link
               href={`/photos/${category}/${pkg.id}`}
               className="bg-rose-500 hover:bg-rose-600 text-white px-4 py-2 rounded-xl font-semibold text-sm transition-colors text-center"
             >
               Book Now
-            </Link>
+            </Link> */}
 
             <button
               onClick={handleAddToCart}
