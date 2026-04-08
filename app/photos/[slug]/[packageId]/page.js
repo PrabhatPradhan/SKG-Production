@@ -34,7 +34,7 @@ export default function PackageDetailPage({ params }) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 mt-[3rem]">
       {/* Breadcrumb */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-4">
         <div className="flex items-center gap-2 text-sm text-gray-500">
@@ -50,11 +50,13 @@ export default function PackageDetailPage({ params }) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Image Gallery */}
           <div>
-            <div className="relative rounded-3xl overflow-hidden mb-4 aspect-square md:aspect-[4/3]">
+            <div className="relative rounded-3xl overflow-hidden mb-4 aspect-square md:aspect-[4/3]"
+            
+            >
               <img
                 src={pkg.images[activeImage]}
                 alt={pkg.name}
-                className="w-full h-full object-cover transition-all duration-500"
+                className="w-full h-full object-cover object-contain transition-all duration-500"
               />
               <div className="absolute top-4 left-4">
                 <span className="bg-rose-500 text-white text-sm font-bold px-3 py-1 rounded-full">
@@ -129,12 +131,12 @@ export default function PackageDetailPage({ params }) {
 
               {/* Action Buttons */}
               <div className="flex flex-col gap-3">
-                <button
+                {/* <button
                   onClick={() => setBooked(true)}
                   className="w-full bg-rose-500 hover:bg-rose-600 text-white py-4 rounded-2xl font-bold text-lg transition-all hover:shadow-lg hover:shadow-rose-200"
                 >
                   {booked ? "✓ Booking Confirmed! We'll call you soon." : "📅 Book Now"}
-                </button>
+                </button> */}
                 <button
                   onClick={handleAddToCart}
                   className={`w-full py-4 rounded-2xl font-bold text-lg border-2 transition-all ${

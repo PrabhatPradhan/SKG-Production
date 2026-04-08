@@ -50,7 +50,7 @@ export default function ModelDetailView({ model, backPath, backLabel, accentColo
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-10 items-start">
 
           {/* Main Photo */}
-          <div className="relative w-full aspect-[3/4] overflow-hidden bg-neutral-900 max-h-[80vh]">
+          <div className="relative w-full aspect-[3/4] overflow-hidden bg-neutral-900 max-h-[95vh]">
             <Image
               src={model.photos[0]}
               alt={model.name}
@@ -77,7 +77,7 @@ export default function ModelDetailView({ model, backPath, backLabel, accentColo
             <h1 className="font-playfair font-black leading-none mb-2"
               style={{ fontSize: "clamp(2.4rem,6vw,4rem)" }}>
               <span className="gold-text">{firstName}</span>{" "}
-              <span className="text-white">{rest.join(" ")}</span>
+              <span className="text-black">{rest.join(" ")}</span>
             </h1>
 
             <p className="font-josefin text-[10px] tracking-[4px] uppercase text-gray-500 mb-6">
@@ -147,7 +147,7 @@ export default function ModelDetailView({ model, backPath, backLabel, accentColo
           </span>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-1.5 sm:gap-2">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-1.5 sm:gap-2" >
           {model.photos.map((photo, i) => (
             <div key={i}
               className="gallery-item relative overflow-hidden cursor-pointer bg-neutral-900"
@@ -155,6 +155,7 @@ export default function ModelDetailView({ model, backPath, backLabel, accentColo
               onClick={() => setLightboxIdx(i)}>
               <Image src={photo} alt={`${model.name} photo ${i + 1}`} fill
                 className="gallery-img object-cover"
+                
                 sizes="(max-width:640px) 50vw,(max-width:1024px) 33vw, 20vw" />
               <div className="gallery-hover-icon">
                 <div className="w-10 h-10 rounded-full border border-yellow-500/60 flex items-center justify-center"
@@ -187,7 +188,7 @@ export default function ModelDetailView({ model, backPath, backLabel, accentColo
       {/* Lightbox */}
       {lightboxIdx !== null && (
         <div className="fixed inset-0 z-[999] flex items-center justify-center p-4"
-          style={{ background: "rgba(0,0,0,0.96)" }}
+          style={{marginTop:"12rem", background: "rgba(0,0,0,0.96)" }}
           onClick={(e) => { if (e.target === e.currentTarget) setLightboxIdx(null); }}>
           <button
             className="absolute top-4 right-5 font-josefin text-yellow-400 text-lg w-9 h-9 border border-yellow-500/30 flex items-center justify-center hover:bg-yellow-500/10 transition-colors z-10"
@@ -201,7 +202,8 @@ export default function ModelDetailView({ model, backPath, backLabel, accentColo
           <div className="relative max-w-2xl w-full" style={{ maxHeight: "88vh" }}>
             <Image src={model.photos[lightboxIdx]} alt={`${model.name} photo ${lightboxIdx + 1}`}
               width={900} height={1200} className="object-contain w-full h-full"
-              style={{ maxHeight: "88vh" }} priority />
+              style={{  maxHeight: "88vh" }} priority />
+               
           </div>
           <button
             className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 w-10 h-10 border border-yellow-500/25 text-yellow-400 text-xl flex items-center justify-center hover:bg-yellow-500/10 transition-colors"

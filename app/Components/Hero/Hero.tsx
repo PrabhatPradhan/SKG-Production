@@ -46,13 +46,13 @@ export default function HomeContent() {
             </div>
 
             <h1 className={`hero-title fade-up ${visible ? "visible" : ""} delay-2`}>
-              Capturing <em>Timeless</em><br />Moments
+             _Get Studio +<em>Shoot + </em><br />Editing at unbeatable price
             </h1>
 
             <div className={`gold-line fade-up ${visible ? "visible" : ""} delay-3`} />
 
-            <p className={`hero-sub fade-up ${visible ? "visible" : ""} delay-3`}>
-              Portrait, Fashion, Wedding &amp; Commercial photography crafted with a refined artistic vision and meticulous attention to detail.
+            <p className={`hero-sub fade-up ${visible ? "visible" : ""} delay-3`} style={{fontSize:"1.2rem"}}>
+             👉 Perfect for Models | Influencers | Brands | Families
             </p>
 
             <div className={`fade-up ${visible ? "visible" : ""} delay-4`} style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center", marginTop: 8 }}>
@@ -62,7 +62,7 @@ export default function HomeContent() {
                   <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
                 </svg>
               </Link>
-              <Link href="/contact" className="btn-outline">Book a Session →</Link>
+              <Link href="/contact" className="btn-outline">Book Your Shoot Now →</Link>
             </div>
 
           </div>

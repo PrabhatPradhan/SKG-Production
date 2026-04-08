@@ -43,11 +43,57 @@ export default function ContactPage() {
   const handleChange = (e) =>
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSubmitted(true);
-  };
+// Frontend me handleSubmit function
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
+  const message = `
+New Enquiry 🚀
+
+Name: ${form.firstName} ${form.lastName}
+Email: ${form.email}
+Phone: ${form.phone}
+Service: ${form.service}
+Date: ${form.date}
+Budget: ${selectedBudget}
+
+Message:
+${form.message}
+  `;
+
+  try {
+    const res = await fetch("/api/send-whatsapp", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ message }),
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      alert("Message sent ✅");
+      // Optional: form reset
+      setForm({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        service: "",
+        date: "",
+        message: "",
+      });
+      setSelectedBudget("");
+    } else {
+      alert("Error sending message ❌");
+      console.error(data.error);
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Something went wrong ❌");
+  }
+};
   return (
     <>
      
@@ -70,158 +116,163 @@ export default function ContactPage() {
           <div className="contact-grid">
 
             {/* LEFT: Studio Info */}
-            <div className="contact-info">
-
-              <div className="info-section">
-                <div className="info-label">Visit Us</div>
-                <div className="info-main">SKG Production Studio</div>
-                <div className="info-sub">
-                  B-14, Second Floor, South Extension Part II<br />
-                  New Delhi — 110 049, India
-                </div>
-              </div>
-
-              <div className="info-section">
-                <div className="info-label">Call Us</div>
-                <a href="tel:+911234567890" className="info-link">+91 12345 67890</a>
-                <a href="tel:+911234567891" className="info-link" style={{ marginTop: 4 }}>+91 12345 67891</a>
-                <div className="info-sub" style={{ marginTop: 6 }}>Mon – Sat, 10 AM – 7 PM</div>
-              </div>
-
-              <div className="info-section">
-                <div className="info-label">Email Us</div>
-                <a href="mailto:hello@skgproduction.com" className="info-link">hello@skgproduction.com</a>
-                <a href="mailto:bookings@skgproduction.com" className="info-link" style={{ marginTop: 4 }}>bookings@skgproduction.com</a>
-              </div>
-
-              <div className="info-section">
-                <div className="info-label">Studio Hours</div>
-                {studioHours.map((h, i) => (
-                  <div className="hours-row" key={i}>
-                    <span className="hours-day">{h.day}</span>
-                    {h.closed
-                      ? <span className="hours-closed">By appointment only</span>
-                      : <span className="hours-time">{h.time}</span>
-                    }
-                  </div>
-                ))}
-              </div>
-
-              <div className="info-section">
-                <div className="info-label">Follow Us</div>
-                <div className="social-row">
-                  {socials.map((s, i) => (
-                    <button className="social-btn" key={i}>{s}</button>
-                  ))}
-                </div>
-              </div>
-
-            </div>
+         
 
             {/* RIGHT: Form */}
-            <div className="contact-form">
-              {!submitted ? (
-                <>
-                  <div className="form-head">
-                    <div className="form-htitle">Send Us a Message</div>
-                    <div className="form-hsub">We typically respond within 24 hours</div>
-                  </div>
+          <div className="w-full max-w-3xl mx-auto bg-white shadow-xl rounded-2xl p-6 md:p-8">
+  {!submitted ? (
+    <>
+      {/* Header */}
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold text-gray-800">Send Us a Message</h2>
+        <p className="text-gray-500 text-sm">We typically respond within 24 hours</p>
+      </div>
 
-                  <form onSubmit={handleSubmit}>
-                    <div className="form-row">
-                      <div className="form-group">
-                        <label className="form-label">First Name</label>
-                        <input className="form-input" name="firstName" type="text" placeholder="Rahul" value={form.firstName} onChange={handleChange} />
-                      </div>
-                      <div className="form-group">
-                        <label className="form-label">Last Name</label>
-                        <input className="form-input" name="lastName" type="text" placeholder="Sharma" value={form.lastName} onChange={handleChange} />
-                      </div>
-                    </div>
+      <form onSubmit={handleSubmit} className="space-y-5">
+        {/* Row 1 */}
+        <div className="grid md:grid-cols-2 gap-4">
+          <div>
+            <label className="text-sm font-medium text-gray-600">First Name</label>
+            <input
+              className="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-rose-400 outline-none"
+              name="firstName"
+              type="text"
+              placeholder="Rahul"
+              value={form.firstName}
+              onChange={handleChange}
+            />
+          </div>
 
-                    <div className="form-row">
-                      <div className="form-group">
-                        <label className="form-label">Email Address</label>
-                        <input className="form-input" name="email" type="email" placeholder="rahul@example.com" value={form.email} onChange={handleChange} />
-                      </div>
-                      <div className="form-group">
-                        <label className="form-label">Phone Number</label>
-                        <input className="form-input" name="phone" type="tel" placeholder="+91 98765 43210" value={form.phone} onChange={handleChange} />
-                      </div>
-                    </div>
+          <div>
+            <label className="text-sm font-medium text-gray-600">Last Name</label>
+            <input
+              className="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-rose-400 outline-none"
+              name="lastName"
+              type="text"
+              placeholder="Sharma"
+              value={form.lastName}
+              onChange={handleChange}
+            />
+          </div>
+        </div>
 
-                    <div className="form-group">
-                      <label className="form-label">Service Required</label>
-                      <select className="form-select" name="service" value={form.service} onChange={handleChange}>
-                        <option value="" disabled>Select a service...</option>
-                        {services.map((s) => <option key={s}>{s}</option>)}
-                      </select>
-                    </div>
+        {/* Row 2 */}
+        <div className="grid md:grid-cols-2 gap-4">
+          <div>
+            <label className="text-sm font-medium text-gray-600">Email Address</label>
+            <input
+              className="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-rose-400 outline-none"
+              name="email"
+              type="email"
+              placeholder="rahul@example.com"
+              value={form.email}
+              onChange={handleChange}
+            />
+          </div>
 
-                    <div className="form-group">
-                      <label className="form-label">Preferred Date</label>
-                      <input className="form-input" name="date" type="date" value={form.date} onChange={handleChange} />
-                    </div>
+          <div>
+            <label className="text-sm font-medium text-gray-600">Phone Number</label>
+            <input
+              className="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-rose-400 outline-none"
+              name="phone"
+              type="tel"
+              placeholder="+91 98765 43210"
+              value={form.phone}
+              onChange={handleChange}
+            />
+          </div>
+        </div>
 
-                    <div className="form-group">
-                      <label className="form-label">Approximate Budget</label>
-                      <div className="form-budget">
-                        {budgetChips.map((b) => (
-                          <button
-                            type="button"
-                            key={b}
-                            className={`budget-chip ${selectedBudget === b ? "active" : ""}`}
-                            onClick={() => setSelectedBudget(b)}
-                          >
-                            {b}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
+        {/* Service */}
+        <div>
+          <label className="text-sm font-medium text-gray-600">Service Required</label>
+          <select
+            className="w-full mt-1 px-4 py-2 border rounded-lg bg-white focus:ring-2 focus:ring-rose-400 outline-none"
+            name="service"
+            value={form.service}
+            onChange={handleChange}
+          >
+            <option value="" disabled>Select a service...</option>
+            {services.map((s) => (
+              <option key={s}>{s}</option>
+            ))}
+          </select>
+        </div>
 
-                    <div className="form-group">
-                      <label className="form-label">Tell Us About Your Vision</label>
-                      <textarea
-                        className="form-textarea"
-                        name="message"
-                        placeholder="Describe your project, location preferences, style references, or anything else..."
-                        value={form.message}
-                        onChange={handleChange}
-                      />
-                    </div>
+        {/* Date */}
+        <div>
+          <label className="text-sm font-medium text-gray-600">Preferred Date</label>
+          <input
+            className="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-rose-400 outline-none"
+            name="date"
+            type="date"
+            value={form.date}
+            onChange={handleChange}
+          />
+        </div>
 
-                    <button type="submit" className="form-submit">
-                      <span>Send Enquiry</span>
-                      <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                        <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
-                      </svg>
-                    </button>
-                  </form>
-                </>
-              ) : (
-                <div className="success-msg">
-                  <div className="success-icon">✦</div>
-                  <div className="success-title">Message Received</div>
-                  <div className="success-sub">Thank you for reaching out. Our team will get back to you within 24 hours.</div>
-                </div>
-              )}
-            </div>
+        {/* Budget Chips */}
+        <div>
+          <label className="text-sm font-medium text-gray-600">Approximate Budget</label>
+          <div className="flex flex-wrap gap-2 mt-2">
+            {budgetChips.map((b) => (
+              <button
+                type="button"
+                key={b}
+                onClick={() => setSelectedBudget(b)}
+                className={`px-4 py-1.5 rounded-full text-sm border transition 
+                ${
+                  selectedBudget === b
+                    ? "bg-rose-500 text-white border-rose-500"
+                    : "bg-gray-100 text-gray-600 hover:bg-rose-50"
+                }`}
+              >
+                {b}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Message */}
+        <div>
+          <label className="text-sm font-medium text-gray-600">Tell Us About Your Vision</label>
+          <textarea
+            className="w-full mt-1 px-4 py-2 border rounded-lg h-28 resize-none focus:ring-2 focus:ring-rose-400 outline-none"
+            name="message"
+            placeholder="Describe your project, location preferences, style references..."
+            value={form.message}
+            onChange={handleChange}
+          />
+        </div>
+
+        {/* Submit */}
+        <button
+          type="submit"
+          className="w-full flex items-center justify-center gap-2 bg-rose-500 hover:bg-rose-600 text-white py-3 rounded-lg font-medium transition"
+        >
+          Send Enquiry
+          <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </button>
+      </form>
+    </>
+  ) : (
+    <div className="text-center py-10">
+      <div className="text-4xl text-rose-500 mb-3">✦</div>
+      <h3 className="text-xl font-semibold text-gray-800">Message Received</h3>
+      <p className="text-gray-500 text-sm mt-1">
+        Thank you for reaching out. Our team will get back to you within 24 hours.
+      </p>
+    </div>
+  )}
+</div>
 
           </div>
         </div>
 
-        {/* ── MAP STRIP ── */}
-        <div className="map-strip">
-          <div className="map-placeholder">
-            <span style={{ fontSize: 22 }}>📍</span>
-            South Extension Part II, New Delhi
-          </div>
-          <div className="map-overlay">
-            <span>📍</span>
-            SKG Production · B-14, South Extension II · New Delhi 110049
-          </div>
-        </div>
-
+        
         {/* ── BOTTOM STRIP ── */}
         <div className="info-strip">
           <div className="info-strip-inner">
