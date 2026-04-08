@@ -107,6 +107,8 @@ export default function Gallery() {
         .grid {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
+           justify-content: center; 
+           align-items: center; 
           gap: 15px;
         }
 
