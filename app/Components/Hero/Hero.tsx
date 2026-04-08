@@ -46,7 +46,7 @@ export default function HomeContent() {
             </div>
 
             <h1 className={`hero-title fade-up ${visible ? "visible" : ""} delay-2`}>
-             _Get Studio +<em>Shoot + </em><br />Editing at unbeatable price
+            Studio+<em>Shoot+Editing </em><br />Editing at unbeatable price
             </h1>
 
             <div className={`gold-line fade-up ${visible ? "visible" : ""} delay-3`} />
