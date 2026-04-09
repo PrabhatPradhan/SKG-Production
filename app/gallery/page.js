@@ -106,10 +106,9 @@ export default function Gallery() {
 
         .grid {
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
-           justify-content: center; 
-           align-items: center; 
+          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
           gap: 15px;
+          justify-content: center;
         }
 
         .img {
