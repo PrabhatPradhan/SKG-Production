@@ -44,7 +44,7 @@ export default function ContactPage() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
 // Frontend me handleSubmit function
-const handleSubmit = async (e) => {
+const handleSubmit = (e) => {
   e.preventDefault();
 
   const message = `
@@ -61,38 +61,23 @@ Message:
 ${form.message}
   `;
 
-  try {
-    const res = await fetch("/api/send-whatsapp", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ message }),
-    });
+  const phoneNumber = "919990144668"; // 👉 apna number daal (91 + number)
 
-    const data = await res.json();
+  const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
-    if (data.success) {
-      alert("Message sent ✅");
-      // Optional: form reset
-      setForm({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: "",
-        service: "",
-        date: "",
-        message: "",
-      });
-      setSelectedBudget("");
-    } else {
-      alert("Error sending message ❌");
-      console.error(data.error);
-    }
-  } catch (err) {
-    console.error(err);
-    alert("Something went wrong ❌");
-  }
+  window.open(whatsappURL, "_blank");
+
+  // optional reset
+  setForm({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    service: "",
+    date: "",
+    message: "",
+  });
+  setSelectedBudget("");
 };
   return (
     <>
