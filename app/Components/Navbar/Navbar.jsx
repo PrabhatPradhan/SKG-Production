@@ -6,7 +6,14 @@ import "./Navbar.css";
 import Image from "next/image";
 import { useCart } from "../../../lib/CartContext"; // ✅ apna sahi path check karna
 import { FiLogOut } from "react-icons/fi";
-
+import { auth } from "../../../lib/firebase";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  onAuthStateChanged,
+  signOut,
+} from "firebase/auth";
 const navLinks = [
   { label: "Home", href: "/" },
   {
@@ -37,6 +44,70 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+  const [user, setUser] = useState(null);
+const [loginData, setLoginData] = useState({ email: "", password: "" });
+const [signupData, setSignupData] = useState({
+  name: "",
+  email: "",
+  password: "",
+});
+useEffect(() => {
+  const unsub = onAuthStateChanged(auth, (currentUser) => {
+    setUser(currentUser);
+  });
+
+  return () => unsub();
+}, []);
+const handleLogin = async (e) => {
+  e.preventDefault();
+  try {
+    await signInWithEmailAndPassword(
+      auth,
+      loginData.email,
+      loginData.password
+    );
+
+    setMessage("✅ Login Successful!");
+    setTimeout(() => {
+      setOpen(false);
+      setMessage("");
+    }, 1500);
+  } catch (error) {
+    setMessage(error.message);
+  }
+};
+const handleSignup = async (e) => {
+  e.preventDefault();
+  try {
+    const res = await createUserWithEmailAndPassword(
+      auth,
+      signupData.email,
+      signupData.password
+    );
+
+    await updateProfile(res.user, {
+      displayName: signupData.name,
+    });
+
+    setMessage("✅ Signup Successful!");
+    setTimeout(() => {
+      setOpen(false);
+      setMessage("");
+    }, 1500);
+  } catch (error) {
+    setMessage(error.message);
+  }
+};
+const handleLogout = async () => {
+  await signOut(auth);
+};
+useEffect(() => {
+  const openLoginModal = () => setOpen(true);
+  window.addEventListener("openLogin", openLoginModal);
+
+  return () => window.removeEventListener("openLogin", openLoginModal);
+}, []);
+const [message, setMessage] = useState("");
   const [open, setOpen] = useState(false);
   const [tab, setTab] = useState("login");
 
@@ -326,12 +397,42 @@ export default function Navbar() {
               </Link>
             </div>
             <div>
-              <button onClick={() => setOpen(true)}
-               className="px-5 py-2 rounded-full border border-yellow-500 text-yellow-400 hover:bg-yellow-500 hover:text-black transition-all duration-300">
-                Login
-              </button>
-            </div>
+            {!user ? (
+  <button
+    onClick={() => setOpen(true)}
+    className="px-6 py-2.5 rounded-full border border-yellow-500 
+    text-yellow-500 font-medium tracking-wide
+    hover:bg-yellow-500 hover:text-black 
+    hover:shadow-md hover:scale-[1.03]
+    transition-all duration-300"
+  >
+    Login
+  </button>
+) : (
+  <div className="flex items-center gap-3 bg-gray-100 px-4 py-2 rounded-full shadow-sm">
 
+    {/* USER AVATAR */}
+    <div className="w-8 h-8 rounded-full bg-yellow-500 text-black flex items-center justify-center text-sm font-bold">
+      {(user.displayName || user.email)?.charAt(0).toUpperCase()}
+    </div>
+
+    {/* USER NAME */}
+    <span className="text-sm font-semibold text-gray-700 max-w-[120px] truncate">
+      {user.displayName || user.email}
+    </span>
+
+    {/* LOGOUT */}
+    <button
+      onClick={handleLogout}
+      className="p-1.5 rounded-full hover:bg-red-100 text-red-500 transition"
+      title="Logout"
+    >
+      <FiLogOut size={18} />
+    </button>
+
+  </div>
+)}
+</div>
 
     
      {/* MODAL */}
@@ -384,55 +485,103 @@ export default function Navbar() {
           Signup
         </button>
       </div>
-
+      {message && (
+  <p className="text-center text-sm text-green-500 mt-2">
+    {message}
+  </p>
+)}
       {/* LOGIN */}
       {tab === "login" && (
-        <form className="flex flex-col gap-4">
-          <input
-            type="email"
-            placeholder="Email"
-            className="p-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition"
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            className="p-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition"
-          />
+      <form onSubmit={handleLogin} className="flex flex-col gap-4">
 
-          <button className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-black py-2.5 rounded-lg font-semibold hover:scale-[1.02] hover:shadow-md transition">
-            Login
-          </button>
-        </form>
+      <input
+        type="email"
+        placeholder="Email"
+        value={loginData.email}
+        onChange={(e) =>
+          setLoginData({ ...loginData, email: e.target.value })
+        }
+        className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-gray-50 
+        focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 
+        transition duration-300 text-sm placeholder-gray-400"
+      />
+    
+      <input
+        type="password"
+        placeholder="Password"
+        value={loginData.password}
+        onChange={(e) =>
+          setLoginData({ ...loginData, password: e.target.value })
+        }
+        className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-gray-50 
+        focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 
+        transition duration-300 text-sm placeholder-gray-400"
+      />
+    
+      <button
+        type="submit"
+        className="mt-2 w-full py-3 rounded-xl font-semibold 
+        bg-gradient-to-r from-yellow-400 to-yellow-500 
+        text-black hover:scale-[1.02] hover:shadow-lg 
+        transition duration-300"
+      >
+        Login
+      </button>
+    
+    </form>
       )}
 
       {/* SIGNUP */}
       {tab === "signup" && (
-        <form className="flex flex-col gap-4">
-          <input
-            type="text"
-            placeholder="Name"
-            className="p-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            className="p-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-          />
-          <input
-            type="tel"
-            placeholder="Phone Number"
-            className="p-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            className="p-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-          />
+     <form onSubmit={handleSignup} className="flex flex-col gap-4">
 
-          <button className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-black py-2.5 rounded-lg font-semibold hover:scale-[1.02] hover:shadow-md transition">
-            Signup
-          </button>
-        </form>
+     <input
+       type="text"
+       placeholder="Full Name"
+       value={signupData.name}
+       onChange={(e) =>
+         setSignupData({ ...signupData, name: e.target.value })
+       }
+       className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-gray-50 
+       focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 
+       transition duration-300 text-sm placeholder-gray-400"
+     />
+   
+     <input
+       type="email"
+       placeholder="Email Address"
+       value={signupData.email}
+       onChange={(e) =>
+         setSignupData({ ...signupData, email: e.target.value })
+       }
+       className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-gray-50 
+       focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 
+       transition duration-300 text-sm placeholder-gray-400"
+     />
+   
+     <input
+       type="password"
+       placeholder="Password"
+       value={signupData.password}
+       onChange={(e) =>
+         setSignupData({ ...signupData, password: e.target.value })
+       }
+       className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-gray-50 
+       focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 
+       transition duration-300 text-sm placeholder-gray-400"
+     />
+   
+     <button
+       type="submit"
+       className="mt-2 w-full py-3 rounded-xl font-semibold 
+       bg-gradient-to-r from-yellow-400 to-yellow-500 
+       text-black hover:scale-[1.02] hover:shadow-lg 
+       transition duration-300"
+     >
+       Create Account
+     </button>
+   
+   </form>
       )}
     </div>
   </div>

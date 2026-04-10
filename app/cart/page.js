@@ -1,11 +1,18 @@
 "use client";
 import { useCart } from "../../lib/CartContext";
 import Link from "next/link";
-import { useState } from "react";
-
+import { useState ,useEffect } from "react";
+import { auth } from "../../lib/firebase";
+import { onAuthStateChanged } from "firebase/auth";
 export default function CartPage() {
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsub();
+  }, []);
   
- 
   const { cartItems, removeFromCart, clearCart, totalItems,deductPhotos, availablePhotos, } = useCart();
   const [checkedOut, setCheckedOut] = useState(false);
   const [photoCounts, setPhotoCounts] = useState(() => {
@@ -195,11 +202,18 @@ export default function CartPage() {
               </div>
 
               <button
-              onClick={() => {
-                deductPhotos(totalSelectedPhotos);  // 👈 ye add karo
-                clearCart();
-                setCheckedOut(true);
-              }}
+             onClick={() => {
+              if (!user) {
+                alert("⚠️ Please login first to continue booking");
+                window.dispatchEvent(new Event("openLogin")); // popup open trigger
+                return;
+              }
+            
+              // ✅ user logged in → continue
+              deductPhotos(totalSelectedPhotos);
+              clearCart();
+              setCheckedOut(true);
+            }}
                  
                 className="w-full bg-rose-500 hover:bg-rose-600 text-white py-4 rounded-2xl font-bold text-lg transition-all hover:shadow-lg hover:shadow-rose-200 mb-3"
               >
