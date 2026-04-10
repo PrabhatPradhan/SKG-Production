@@ -333,101 +333,110 @@ export default function Navbar() {
             </div>
 
 
-      {/* MODAL */}
-      {open && (
-        <div
-        style={{marginTop:"12rem",}}
-          className="fixed inset-0 z-[999] flex items-center justify-center bg-black/70"
-          onClick={(e) => {
-            if (e.target === e.currentTarget) setOpen(false);
-          }}
-        >
-          <div className="bg-black text-white w-[90%] max-w-md rounded-xl p-6 relative border border-yellow-500/30">
-
-            {/* CLOSE */}
-            <button
-              className="absolute top-3 right-4 text-xl text-yellow-400"
-              onClick={() => setOpen(false)}
-            >
-              ✕
-            </button>
-
-            {/* TABS */}
-            <div className="flex mb-5 border-b border-yellow-500/30">
-              <button
-                onClick={() => setTab("login")}
-                className={`flex-1 py-2 ${
-                  tab === "login"
-                    ? "text-yellow-400 border-b-2 border-yellow-400"
-                    : "text-gray-400"
-                }`}
-              >
-                Login
-              </button>
-              <button
-                onClick={() => setTab("signup")}
-                className={`flex-1 py-2 ${
-                  tab === "signup"
-                    ? "text-yellow-400 border-b-2 border-yellow-400"
-                    : "text-gray-400"
-                }`}
-              >
-                Signup
-              </button>
-            </div>
-
-            {/* LOGIN FORM */}
-            {tab === "login" && (
-              <form className="flex flex-col gap-4">
-                <input
-                  type="email"
-                  placeholder="Email"
-                  className="p-2 rounded bg-black border border-yellow-500/30 focus:outline-none"
-                />
-                <input
-                  type="password"
-                  placeholder="Password"
-                  className="p-2 rounded bg-black border border-yellow-500/30 focus:outline-none"
-                />
-                <button className="bg-yellow-500 text-black py-2 rounded hover:bg-yellow-600 transition">
-                  Login
-                </button>
-              </form>
-            )}
-
-            {/* SIGNUP FORM */}
-            {tab === "signup" && (
-              <form className="flex flex-col gap-4">
-                <input
-                  type="text"
-                  placeholder="Name"
-                  className="p-2 rounded bg-black border border-yellow-500/30 focus:outline-none"
-                />
-                <input
-                  type="email"
-                  placeholder="Email"
-                  className="p-2 rounded bg-black border border-yellow-500/30 focus:outline-none"
-                />
-                <input
-                  type=""
-                  placeholder="Phone Number"
-                  className="p-2 rounded bg-black border border-yellow-500/30 focus:outline-none"
-                />
-                <input
-                  type="password"
-                  placeholder="Password"
-                  className="p-2 rounded bg-black border border-yellow-500/30 focus:outline-none"
-                />
-                <button className="bg-yellow-500 text-black py-2 rounded hover:bg-yellow-600 transition">
-                  Signup
-                </button>
-              </form>
-            )}
-          </div>
-        </div>
-      )}
     
+     {/* MODAL */}
+{open && (
+  <div
+  style={{marginTop:"15rem"}}
+    className="fixed inset-0 z-[999] flex items-center justify-center bg-black/40 backdrop-blur-sm"
+    onClick={(e) => {
+      if (e.target === e.currentTarget) setOpen(false);
+    }}
+  >
+    <div className="bg-white text-black w-[90%] max-w-md rounded-2xl p-6 relative shadow-2xl border border-gray-200">
 
+      {/* GOLD TOP LINE */}
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 rounded-t-2xl"></div>
+
+      {/* CLOSE */}
+      <button
+        className="absolute top-3 right-4 text-lg text-gray-400 hover:text-yellow-500 transition"
+        onClick={() => setOpen(false)}
+      >
+        ✕
+      </button>
+
+      {/* TITLE */}
+      <h2 className="text-xl font-semibold mb-4 text-center">
+        Welcome <span className="text-yellow-500">Back</span>
+      </h2>
+
+      {/* TABS */}
+      <div className="flex mb-5 border-b border-gray-200">
+        <button
+          onClick={() => setTab("login")}
+          className={`flex-1 py-2 font-medium transition ${
+            tab === "login"
+              ? "text-yellow-600 border-b-2 border-yellow-500"
+              : "text-gray-500 hover:text-yellow-500"
+          }`}
+        >
+          Login
+        </button>
+        <button
+          onClick={() => setTab("signup")}
+          className={`flex-1 py-2 font-medium transition ${
+            tab === "signup"
+              ? "text-yellow-600 border-b-2 border-yellow-500"
+              : "text-gray-500 hover:text-yellow-500"
+          }`}
+        >
+          Signup
+        </button>
+      </div>
+
+      {/* LOGIN */}
+      {tab === "login" && (
+        <form className="flex flex-col gap-4">
+          <input
+            type="email"
+            placeholder="Email"
+            className="p-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            className="p-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition"
+          />
+
+          <button className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-black py-2.5 rounded-lg font-semibold hover:scale-[1.02] hover:shadow-md transition">
+            Login
+          </button>
+        </form>
+      )}
+
+      {/* SIGNUP */}
+      {tab === "signup" && (
+        <form className="flex flex-col gap-4">
+          <input
+            type="text"
+            placeholder="Name"
+            className="p-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            className="p-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          />
+          <input
+            type="tel"
+            placeholder="Phone Number"
+            className="p-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            className="p-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          />
+
+          <button className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-black py-2.5 rounded-lg font-semibold hover:scale-[1.02] hover:shadow-md transition">
+            Signup
+          </button>
+        </form>
+      )}
+    </div>
+  </div>
+)}
             {/* ── HAMBURGER ── */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
