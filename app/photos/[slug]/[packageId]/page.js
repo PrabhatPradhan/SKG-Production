@@ -7,7 +7,7 @@ import { useState } from "react";
 
 export default function PackageDetailPage({ params }) {
   const { slug, packageId } = use(params);
-
+  const [qty, setQty] = useState(1);
   const cat = shootCategories[slug];
   const pkg = cat?.packages.find((p) => p.id === packageId);
 
@@ -24,23 +24,26 @@ export default function PackageDetailPage({ params }) {
     addToCart({
       id: pkg.id,
       name: pkg.name,
-      price: pkg.price,
+      price: Number(pkg.price), // safe
       duration: pkg.duration,
       photos: pkg.photos,
       category: slug,
       image: pkg.images[0],
+      qty: 1, // ⭐ IMPORTANT
     });
+
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   };
 
   return (
     <div className="min-h-screen bg-gray-50 mt-[3rem]">
-      
       {/* Breadcrumb */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-4">
         <div className="flex items-center gap-2 text-sm text-gray-500">
-          <Link href="/" className="hover:text-rose-500">Home</Link>
+          <Link href="/" className="hover:text-rose-500">
+            Home
+          </Link>
           <span>/</span>
           <Link href={`/photos/${slug}`} className="hover:text-rose-500">
             {cat.title}
@@ -53,7 +56,6 @@ export default function PackageDetailPage({ params }) {
       {/* MAIN */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
           {/* LEFT: IMAGE GRID */}
           <div className="lg:col-span-2">
             <div className="flex flex-wrap gap-4">
@@ -79,14 +81,11 @@ export default function PackageDetailPage({ params }) {
           {/* RIGHT: DETAILS */}
           <div className="lg:col-span-1 flex flex-col justify-start">
             <div className="bg-white rounded-3xl p-5 shadow-sm border border-gray-100">
-
               <h1 className="text-xl font-black text-gray-900 mb-2">
                 {pkg.name}
               </h1>
 
-              <p className="text-gray-500 mb-5 text-sm">
-                {pkg.description}
-              </p>
+              <p className="text-gray-500 mb-5 text-sm">{pkg.description}</p>
 
               {/* INFO */}
               <div className="grid grid-cols-2 gap-3 mb-6">
@@ -118,9 +117,12 @@ export default function PackageDetailPage({ params }) {
                 <div className="text-xs text-emerald-600 mt-2">
                   ✓ Free Cancellation
                 </div>
-                <div className="text-xs text-emerald-600">
-                  ✓ 48hr Delivery
-                </div>
+                <div className="text-xs text-emerald-600">✓ 48hr Delivery</div>
+              </div>
+              <div className="flex items-center gap-3 mb-4">
+                <button onClick={() => setQty(qty > 1 ? qty - 1 : 1)}>-</button>
+                <span>{qty}</span>
+                <button onClick={() => setQty(qty + 1)}>+</button>
               </div>
 
               {/* BUTTONS */}
@@ -133,11 +135,7 @@ export default function PackageDetailPage({ params }) {
                       : "border-rose-300 text-rose-500 hover:bg-rose-50"
                   }`}
                 >
-                  {added
-                    ? "✓ Added!"
-                    : inCart
-                    ? "✓ In Cart"
-                    : "🛒 Add to Cart"}
+                  {added ? "✓ Added!" : inCart ? "✓ In Cart" : "🛒 Add to Cart"}
                 </button>
 
                 <Link
@@ -155,7 +153,6 @@ export default function PackageDetailPage({ params }) {
       {/* LIGHTBOX */}
       {isOpen && (
         <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50">
-
           <button
             onClick={() => setIsOpen(false)}
             className="absolute top-5 right-5 text-white text-3xl"
