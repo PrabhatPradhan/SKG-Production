@@ -65,7 +65,9 @@ export default function ShootCards() {
 
       <div className="skg-shoot-grid">
         {shoots.map((shoot) => (
+             
           <div key={shoot.slug} className="skg-card">
+            <Link href={`/photos/${shoot.slug}`}  > 
             {/* Image */}
             <div className="skg-card-img-wrap">
               <img src={shoot.image} alt={shoot.title} className="skg-card-img" />
@@ -79,14 +81,16 @@ export default function ShootCards() {
               <h3 className="skg-card-title">{shoot.title}</h3>
               <p className="skg-card-desc">{shoot.description}</p>
               <Link href={`/photos/${shoot.slug}`} className="skg-card-btn">
-                Book Now
+                View Now
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <line x1="5" y1="12" x2="19" y2="12" />
                   <polyline points="12 5 19 12 12 19" />
                 </svg>
               </Link>
             </div>
+              </Link>
           </div>
+        
         ))}
       </div>
  
