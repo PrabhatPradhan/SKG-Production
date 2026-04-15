@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
-
+import { createPortal } from "react-dom";
 export default function ModelDetailView({ model, backPath, backLabel, accentColor = "rose" }) {
   const [lightboxIdx, setLightboxIdx] = useState(null);
 
@@ -185,40 +185,57 @@ export default function ModelDetailView({ model, backPath, backLabel, accentColo
         </Link>
       </div>
 
-      {/* Lightbox */}
-      {lightboxIdx !== null && (
-        <div className="fixed inset-0 z-[999] flex items-center justify-center p-4"
-          style={{marginTop:"12rem", background: "rgba(0,0,0,0.96)" }}
-          onClick={(e) => { if (e.target === e.currentTarget) setLightboxIdx(null); }}>
-          <button
-            className="absolute top-4 right-5 font-josefin text-yellow-400 text-lg w-9 h-9 border border-yellow-500/30 flex items-center justify-center hover:bg-yellow-500/10 transition-colors z-10"
-            onClick={() => setLightboxIdx(null)}>✕</button>
-          <div className="absolute top-5 left-1/2 -translate-x-1/2 font-josefin text-[9px] tracking-[4px] uppercase text-yellow-600/50">
-            {lightboxIdx + 1} / {model.photos.length}
-          </div>
-          <button
-            className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 w-10 h-10 border border-yellow-500/25 text-yellow-400 text-xl flex items-center justify-center hover:bg-yellow-500/10 transition-colors"
-            onClick={() => setLightboxIdx((i) => (i - 1 + model.photos.length) % model.photos.length)}>‹</button>
-          <div className="relative max-w-2xl w-full" style={{ maxHeight: "88vh" }}>
-            <Image src={model.photos[lightboxIdx]} alt={`${model.name} photo ${lightboxIdx + 1}`}
-              width={900} height={1200} className="object-contain w-full h-full"
-              style={{  maxHeight: "88vh" }} priority />
-               
-          </div>
-          <button
-            className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 w-10 h-10 border border-yellow-500/25 text-yellow-400 text-xl flex items-center justify-center hover:bg-yellow-500/10 transition-colors"
-            onClick={() => setLightboxIdx((i) => (i + 1) % model.photos.length)}>›</button>
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 max-w-xs sm:max-w-md overflow-x-auto px-2">
-            {model.photos.map((p, i) => (
-              <div key={i} onClick={() => setLightboxIdx(i)}
-                className={`relative flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 overflow-hidden cursor-pointer transition-all ${
-                  i === lightboxIdx ? "border border-yellow-400" : "border border-transparent opacity-40 hover:opacity-70"}`}>
-                <Image src={p} alt="" fill className="object-cover" sizes="48px" />
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      
+       {/* LIGHTBOX */}
+
+
+{/* LIGHTBOX */}
+{lightboxIdx !== null &&
+  typeof window !== "undefined" &&
+  createPortal(
+    <div className="fixed inset-0 z-[99999] bg-black/95 flex items-center justify-center">
+
+      {/* CLOSE */}
+      <button
+        onClick={() => setLightboxIdx(null)}
+        className="absolute top-5 right-5 text-white text-3xl z-[100000]"
+      >
+        ✖
+      </button>
+
+      {/* PREV */}
+      <button
+        onClick={() =>
+          setLightboxIdx((prev) =>
+            prev === 0 ? model.photos.length - 1 : prev - 1
+          )
+        }
+        className="absolute left-2 md:left-8 text-white text-5xl z-[100000]"
+      >
+        ‹
+      </button>
+
+      {/* IMAGE */}
+      <img
+        src={model.photos[lightboxIdx]}
+        alt=""
+        className="max-h-[85vh] max-w-[90vw] object-contain"
+      />
+
+      {/* NEXT */}
+      <button
+        onClick={() =>
+          setLightboxIdx((prev) =>
+            prev === model.photos.length - 1 ? 0 : prev + 1
+          )
+        }
+        className="absolute right-2 md:right-8 text-white text-5xl z-[100000]"
+      >
+        ›
+      </button>
+    </div>,
+    document.body
+  )}
     </main>
   );
 }

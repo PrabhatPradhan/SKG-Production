@@ -6,18 +6,19 @@ import Link from "next/link";
 import { useState } from "react";
 
 export default function PackageDetailPage({ params }) {
-  const { slug, packageId } = use(params); // ✅ use() se unwrap karo
+  const { slug, packageId } = use(params);
 
   const cat = shootCategories[slug];
   const pkg = cat?.packages.find((p) => p.id === packageId);
 
   const [activeImage, setActiveImage] = useState(0);
-  const [booked, setBooked] = useState(false);
   const [added, setAdded] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
   const { addToCart, cartItems } = useCart();
   const inCart = cartItems.some((i) => i.id === pkg?.id);
 
-  if (!cat || !pkg) return null; // ✅ notFound() hooks ke baad call nahi ho sakta
+  if (!cat || !pkg) return null;
 
   const handleAddToCart = () => {
     addToCart({
@@ -35,121 +36,113 @@ export default function PackageDetailPage({ params }) {
 
   return (
     <div className="min-h-screen bg-gray-50 mt-[3rem]">
+      
       {/* Breadcrumb */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-4">
         <div className="flex items-center gap-2 text-sm text-gray-500">
           <Link href="/" className="hover:text-rose-500">Home</Link>
           <span>/</span>
-          <Link href={`/photos/${slug}`} className="hover:text-rose-500">{cat.title}</Link>
+          <Link href={`/photos/${slug}`} className="hover:text-rose-500">
+            {cat.title}
+          </Link>
           <span>/</span>
           <span className="text-gray-900 font-medium">{pkg.name}</span>
         </div>
       </div>
 
+      {/* MAIN */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Image Gallery */}
-          <div>
-            <div className="relative rounded-3xl overflow-hidden mb-4 aspect-square md:aspect-[4/3]"
-            
-            >
-              <img
-                src={pkg.images[activeImage]}
-                alt={pkg.name}
-                className="w-full h-full object-cover object-contain transition-all duration-500"
-              />
-              <div className="absolute top-4 left-4">
-                <span className="bg-rose-500 text-white text-sm font-bold px-3 py-1 rounded-full">
-                  {cat.icon} {cat.title}
-                </span>
-              </div>
-            </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-            {/* Thumbnail Strip */}
-            <div className="grid grid-cols-4 gap-3">
+          {/* LEFT: IMAGE GRID */}
+          <div className="lg:col-span-2">
+            <div className="flex flex-wrap gap-4">
               {pkg.images.map((img, i) => (
-                <button
+                <div
                   key={i}
-                  onClick={() => setActiveImage(i)}
-                  className={`rounded-2xl overflow-hidden aspect-square transition-all ${
-                    activeImage === i
-                      ? "border-4 border-rose-500 scale-95 shadow-lg"
-                      : "border-2 border-transparent opacity-70 hover:opacity-100"
-                  }`}
+                  onClick={() => {
+                    setActiveImage(i);
+                    setIsOpen(true);
+                  }}
+                  className="w-[14rem] h-[14rem] rounded-xl overflow-hidden cursor-pointer group"
                 >
-                  <img src={img} alt="" className="w-full h-full object-cover" />
-                </button>
+                  <img
+                    src={img}
+                    alt=""
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                </div>
               ))}
             </div>
           </div>
 
-          {/* Details */}
-          <div className="flex flex-col justify-start">
-            <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
-              <h1 className="text-4xl font-black text-gray-900 mb-2">{pkg.name}</h1>
-              <p className="text-gray-500 mb-6 leading-relaxed text-lg">{pkg.description}</p>
+          {/* RIGHT: DETAILS */}
+          <div className="lg:col-span-1 flex flex-col justify-start">
+            <div className="bg-white rounded-3xl p-5 shadow-sm border border-gray-100">
 
-              {/* Stats */}
-              <div className="grid grid-cols-2 gap-4 mb-8">
-                <div className="bg-rose-50 rounded-2xl p-4 text-center">
-                  <div className="text-2xl font-black text-rose-600">{pkg.duration}</div>
-                  <div className="text-sm text-gray-500 font-medium">Session Length</div>
-                </div>
-                <div className="bg-rose-50 rounded-2xl p-4 text-center">
-                  <div className="text-2xl font-black text-rose-600">{pkg.photos}</div>
-                  <div className="text-sm text-gray-500 font-medium">Delivered</div>
-                </div>
-              </div>
+              <h1 className="text-xl font-black text-gray-900 mb-2">
+                {pkg.name}
+              </h1>
 
-              {/* Includes */}
-              <div className="mb-8">
-                <h3 className="font-bold text-gray-900 text-lg mb-4">What's Included</h3>
-                <div className="space-y-3">
-                  {pkg.includes.map((item, i) => (
-                    <div key={i} className="flex items-center gap-3 text-gray-700">
-                      <span className="w-6 h-6 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">✓</span>
-                      <span>{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <p className="text-gray-500 mb-5 text-sm">
+                {pkg.description}
+              </p>
 
-              {/* Price */}
-              <div className="border-t border-gray-100 pt-6 mb-6">
-                <div className="flex items-end justify-between">
-                  <div>
-                    <span className="text-sm text-gray-400 block">Package Price</span>
-                    <span className="text-5xl font-black text-gray-900">₹{pkg.price.toLocaleString()}</span>
-                    <span className="text-gray-400 text-sm"> + taxes</span>
+              {/* INFO */}
+              <div className="grid grid-cols-2 gap-3 mb-6">
+                <div className="bg-rose-50 rounded-xl p-3 text-center">
+                  <div className="text-lg font-black text-rose-600">
+                    {pkg.duration}
                   </div>
-                  <div className="text-right">
-                    <div className="text-sm text-emerald-600 font-semibold">✓ Free Cancellation</div>
-                    <div className="text-sm text-emerald-600 font-semibold">✓ 48hr Delivery</div>
+                  <div className="text-xs text-gray-500">Session</div>
+                </div>
+
+                <div className="bg-rose-50 rounded-xl p-3 text-center">
+                  <div className="text-lg font-black text-rose-600">
+                    {pkg.photos}
                   </div>
+                  <div className="text-xs text-gray-500">Photos</div>
                 </div>
               </div>
 
-              {/* Action Buttons */}
+              {/* PRICE */}
+              <div className="border-t pt-4 mb-5">
+                <span className="text-xs text-gray-400 block">
+                  Package Price
+                </span>
+
+                <span className="text-2xl font-black text-gray-900">
+                  ₹{pkg.price.toLocaleString()}
+                </span>
+
+                <div className="text-xs text-emerald-600 mt-2">
+                  ✓ Free Cancellation
+                </div>
+                <div className="text-xs text-emerald-600">
+                  ✓ 48hr Delivery
+                </div>
+              </div>
+
+              {/* BUTTONS */}
               <div className="flex flex-col gap-3">
-                {/* <button
-                  onClick={() => setBooked(true)}
-                  className="w-full bg-rose-500 hover:bg-rose-600 text-white py-4 rounded-2xl font-bold text-lg transition-all hover:shadow-lg hover:shadow-rose-200"
-                >
-                  {booked ? "✓ Booking Confirmed! We'll call you soon." : "📅 Book Now"}
-                </button> */}
                 <button
                   onClick={handleAddToCart}
-                  className={`w-full py-4 rounded-2xl font-bold text-lg border-2 transition-all ${
+                  className={`w-full py-3 rounded-xl font-bold text-sm border transition ${
                     inCart || added
                       ? "bg-emerald-50 border-emerald-400 text-emerald-600"
                       : "border-rose-300 text-rose-500 hover:bg-rose-50"
                   }`}
                 >
-                  {added ? "✓ Added to Cart!" : inCart ? "✓ Already in Cart" : "🛒 Add to Cart"}
+                  {added
+                    ? "✓ Added!"
+                    : inCart
+                    ? "✓ In Cart"
+                    : "🛒 Add to Cart"}
                 </button>
+
                 <Link
                   href="/cart"
-                  className="w-full text-center py-3 rounded-2xl font-semibold text-gray-500 hover:text-gray-900 transition-colors text-sm"
+                  className="text-center text-sm text-gray-500 hover:text-black"
                 >
                   View Cart →
                 </Link>
@@ -158,6 +151,46 @@ export default function PackageDetailPage({ params }) {
           </div>
         </div>
       </div>
+
+      {/* LIGHTBOX */}
+      {isOpen && (
+        <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50">
+
+          <button
+            onClick={() => setIsOpen(false)}
+            className="absolute top-5 right-5 text-white text-3xl"
+          >
+            ✖
+          </button>
+
+          <button
+            onClick={() =>
+              setActiveImage((prev) =>
+                prev === 0 ? pkg.images.length - 1 : prev - 1
+              )
+            }
+            className="absolute left-5 text-white text-4xl"
+          >
+            ‹
+          </button>
+
+          <img
+            src={pkg.images[activeImage]}
+            className="max-h-[90vh] max-w-[90vw] object-contain"
+          />
+
+          <button
+            onClick={() =>
+              setActiveImage((prev) =>
+                prev === pkg.images.length - 1 ? 0 : prev + 1
+              )
+            }
+            className="absolute right-5 text-white text-4xl"
+          >
+            ›
+          </button>
+        </div>
+      )}
     </div>
   );
 }
