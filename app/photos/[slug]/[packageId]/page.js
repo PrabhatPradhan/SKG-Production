@@ -24,17 +24,21 @@ export default function PackageDetailPage({ params }) {
     addToCart({
       id: pkg.id,
       name: pkg.name,
-      price: Number(pkg.price), // safe
+      price: totalPrice, // ✅ dynamic price
       duration: pkg.duration,
-      photos: pkg.photos,
+      photos: qty, // ✅ selected photos
       category: slug,
       image: pkg.images[0],
-      qty: 1, // ⭐ IMPORTANT
+      qty: 1,
     });
-
+  
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   };
+
+
+  const pricePerPhoto = 200;
+const totalPrice = qty * pricePerPhoto;
 
   return (
     <div className="min-h-screen bg-gray-50 mt-[3rem]">
@@ -111,7 +115,7 @@ export default function PackageDetailPage({ params }) {
                 </span>
 
                 <span className="text-2xl font-black text-gray-900">
-                  ₹{pkg.price.toLocaleString()}
+                ₹{totalPrice.toLocaleString()}
                 </span>
 
                 <div className="text-xs text-emerald-600 mt-2">

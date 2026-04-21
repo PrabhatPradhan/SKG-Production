@@ -93,20 +93,7 @@ export default function PackageCard({ pkg, category }) {
           </div>
         </div>
 
-        {/* Includes */}
-        {/* <div className="mb-5 space-y-1">
-          {pkg.includes.slice(0, 3).map((item, i) => (
-            <div key={i} className="flex items-center gap-2 text-sm text-gray-600">
-              <span className="text-emerald-500 font-bold">✓</span>
-              {item}
-            </div>
-          ))}
-          {pkg.includes.length > 3 && (
-            <div className="text-sm text-rose-500 font-medium">
-              +{pkg.includes.length - 3} more inclusions
-            </div>
-          )}
-        </div> */}
+        
 
         {/* Price & Buttons */}
         <div className="flex items-center justify-between pt-4 border-t border-gray-100">
