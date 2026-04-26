@@ -37,6 +37,9 @@ const navLinks = [
       { label: "Child", href: "/models/child", icon: "👧" },
     ],
   },
+  {
+    label: "Influencer", href: "/influencer", 
+  },
   { label: "Cart", href: "/cart", cartBadge: true }, // ✅ cartBadge flag added
   { label: "About", href: "/about" },
   { label: "Gallery", href: "/gallery" },
