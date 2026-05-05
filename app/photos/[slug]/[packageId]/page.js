@@ -62,7 +62,7 @@ const totalPrice = qty * pricePerPhoto;
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* LEFT: IMAGE GRID */}
           <div className="lg:col-span-2">
-            <div className="flex flex-wrap gap-4">
+            <div className="grid grid-cols-[repeat(auto-fit,14rem)] gap-4 justify-center">
               {pkg.images.map((img, i) => (
                 <div
                   key={i}
