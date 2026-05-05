@@ -36,7 +36,7 @@ export default function Gallery() {
   };
 
   return (
-    <div className="container"  style={{marginTop:"4rem",}}>
+    <div className=" "  style={{marginTop:"4rem",}}>
 
       <h2 className="title" style={{fontSize:"1.5rem"}}>All Shoot Gallery</h2>
 
