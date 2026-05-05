@@ -36,7 +36,7 @@ export default function Gallery() {
   };
 
   return (
-    <div className=" "  style={{marginTop:"4rem",}}>
+    <div className="mr-4 pr-2"  style={{marginTop:"4rem",}}>
 
       <h2 className="title" style={{fontSize:"1.5rem"}}>All Shoot Gallery</h2>
 
@@ -81,7 +81,7 @@ export default function Gallery() {
 
           {/* NEXT */}
           <button
-            className="next"
+            className="next mr-5"
             onClick={(e) => {
               e.stopPropagation();
               nextImage();
