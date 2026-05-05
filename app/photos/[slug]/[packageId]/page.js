@@ -62,7 +62,7 @@ const totalPrice = qty * pricePerPhoto;
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* LEFT: IMAGE GRID */}
           <div className="lg:col-span-2">
-            <div className="grid grid-cols-[repeat(auto-fit,14rem)] gap-4 justify-center">
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 justify-center">
               {pkg.images.map((img, i) => (
                 <div
                   key={i}
@@ -70,12 +70,12 @@ const totalPrice = qty * pricePerPhoto;
                     setActiveImage(i);
                     setIsOpen(true);
                   }}
-                  className="w-[14rem] h-[14rem] rounded-xl overflow-hidden cursor-pointer group"
+                  className="w-[16rem] h-[15rem] rounded-xl overflow-hidden cursor-pointer group"
                 >
                   <img
                     src={img}
                     alt=""
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                    className="w-full h-full   transition-transform duration-300 group-hover:scale-110"
                   />
                 </div>
               ))}
